@@ -1,0 +1,31 @@
+{
+  "id": "zen-quick-save-image",
+  "name": "Quick Save Image",
+  "description": "Save images directly to Downloads with automatic duplicate filename numbering.",
+  "homepage": "https://github.com/natsufatsu/Zen-Quick-Save-Image",
+  "readme": "https://raw.githubusercontent.com/natsufatsu/Zen-Quick-Save-Image/main/README.md",
+  "style": {
+    "chrome": "chrome.css"
+  },
+  "scripts": {
+    "quick-save-image.uc.js": {
+      "include": [
+        "chrome://browser/content/browser.xhtml"
+      ],
+      "loadOrder": 1
+    }
+  },
+  "author": "natsufatsu",
+  "version": "1.0.0",
+  "tags": [
+    "sine",
+    "fx-autoconfig",
+    "Downloads",
+    "Images"
+  ],
+  "createdAt": "2026-09-14",
+  "updatedAt": "2026-09-14",
+  "fork": [
+    "zen"
+  ]
+}
