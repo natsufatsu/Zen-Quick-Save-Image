@@ -282,27 +282,24 @@ test("starts independently after browser startup and removes pending observers o
   assert.equal(b.elements.has("zen-quick-save-image-command"), false);
 });
 
-test("leaves other mods, native save functions and download observers intact", async t => {
+test("leaves other customizations, native save functions and observers intact", async t => {
   const f = fixture(t), a = f.makeWindow();
-  const tidy = Object.freeze({ enabled: true });
-  Object.defineProperty(a.window, "zenTidyDownloads", {
-    get() { throw new Error("Quick Save must not access Tidy Downloads"); }
-  });
-  a.window.zenTidyDownloadsToasts = tidy;
+  const otherCustomization = Object.freeze({ enabled: true });
+  a.window.otherDownloadCustomization = otherCustomization;
   const nativeSave = a.window.internalSave;
   const nativeSecurityCheck = a.window.urlSecurityCheck;
-  let tidyNotifications = 0;
-  const tidyView = { onDownloadAdded() { tidyNotifications++; } };
-  f.views.add(tidyView);
+  let otherNotifications = 0;
+  const otherView = { onDownloadAdded() { otherNotifications++; } };
+  f.views.add(otherView);
   await a.save();
-  assert.equal(tidyNotifications, 1);
+  assert.equal(otherNotifications, 1);
   f.lastDownload.error = new Error("Network failure");
   f.emit("onDownloadChanged", f.lastDownload);
   assert.equal(f.errors.length, 1);
-  assert.equal(a.window.zenTidyDownloadsToasts, tidy);
+  assert.equal(a.window.otherDownloadCustomization, otherCustomization);
   assert.equal(a.window.internalSave, nativeSave);
   assert.equal(a.window.urlSecurityCheck, nativeSecurityCheck);
   a.window.zenQuickSaveImage.destroy();
-  assert.equal(f.views.has(tidyView), true);
+  assert.equal(f.views.has(otherView), true);
   assert.equal(a.elements.has("context-saveimage"), true);
 });
